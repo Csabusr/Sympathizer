@@ -13,6 +13,7 @@
 #include "UI/AdsrComponent.h"
 #include "UI/OscComponent.h"
 #include "UI/FMComponent.h"
+#include "UI/FilterComponent.h"
 
 //==============================================================================
 /**
@@ -34,6 +35,7 @@ private:
     AdsrComponent adsr;
     OscComponent osc;
     FMComponent fm;
+    FilterComponent filter;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SympathizerAudioProcessorEditor)

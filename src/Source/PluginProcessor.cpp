@@ -9,6 +9,8 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "SynthSound.h"
+#include "Data/FilterData.h"
+
 
 //==============================================================================
 SympathizerAudioProcessor::SympathizerAudioProcessor()
@@ -111,6 +113,8 @@ void SympathizerAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
             voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumInputChannels());
         }
     }
+
+    filter.perpareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
 }
 
 void SympathizerAudioProcessor::releaseResources()
@@ -187,8 +191,15 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
         }
     }
 
-
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    auto& filterType = *apvts.getRawParameterValue("FILTERTYPE");
+    auto& filterCutoff = *apvts.getRawParameterValue("FILTERCUTOFF");
+    auto& filterRes = *apvts.getRawParameterValue("FILTERRES");
+
+    filter.updateParams(filterType, filterCutoff, filterRes);
+
+    filter.process(buffer);
 
 }
 
@@ -226,19 +237,16 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::createParameters()
 {
-    //combobox: switch oscillators
-    //Attack, decay, sustai, release.
 
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC", "Oscillator", juce::StringArray{ "Sine", "Saw", "Square" }, 0));
 
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC", "Oscillator", juce::StringArray{ "Sine", "Saw", "Square" }, 0));
 
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FMFREQ", "FM Frequency", juce::NormalisableRange<float> {0.0f, 10.0f, 0.01f, 0.5f}, 0.0f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FMDEPTH", "FM Depth", juce::NormalisableRange<float> {0.0f, 100.0f, 0.01f, 0.5f}, 0.0f));
-
 
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
@@ -250,6 +258,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
     params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", juce::NormalisableRange<float> {0.1f, 3.0f}, 0.4f));
 
     params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 wave type", juce::StringArray{ "Sine", "Saw", "Square" }, 0));
+
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE", "Filter type", juce::StringArray{ "Low pass", "Band pass", "High pass" }, 0));
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERCUTOFF", "Filter cutoff freq", juce::NormalisableRange<float> {20.0f, 20000.0f, 1.0f, 0.5f}, 100.0f));
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERRES", "Filter resonance", juce::NormalisableRange<float> {1.0f, 10.0f, 0.1f}, 1.0f));
+
+
 
     return { params.begin(), params.end() };
 }
