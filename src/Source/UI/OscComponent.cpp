@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "OscComponent.h"
+#include "Colours.h"
 
 //==============================================================================
 OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, juce::String waveSelectorId)
@@ -37,7 +38,7 @@ void OscComponent::paint(juce::Graphics& g)
        drawing code..
     */
 
-    g.fillAll(juce::Colours::black);
+    g.fillAll(OurColours::BaseColour);
 
 }
 

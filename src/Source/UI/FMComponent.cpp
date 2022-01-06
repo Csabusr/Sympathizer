@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "FMComponent.h"
+#include "Colours.h"
 
 //==============================================================================
 FMComponent::FMComponent(juce::AudioProcessorValueTreeState& apvts)
@@ -37,7 +38,7 @@ FMComponent::~FMComponent()
 void FMComponent::paint(juce::Graphics& g)
 {
 
-    g.fillAll(juce::Colours::black);   // clear the background
+    g.fillAll(OurColours::BaseColour);   // clear the background
 }
 
 void FMComponent::resized()

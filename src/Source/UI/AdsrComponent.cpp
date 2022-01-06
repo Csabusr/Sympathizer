@@ -9,6 +9,7 @@
 */
 
 #include <JuceHeader.h>
+#include "Colours.h"
 #include "AdsrComponent.h"
 
 //==============================================================================
@@ -24,6 +25,8 @@ AdsrComponent::AdsrComponent(juce::AudioProcessorValueTreeState& apvts)
     sustainAttachment = std::make_unique<SliderAttachment>(apvts, "SUSTAIN", sustainSlider);
     releaseAttachment = std::make_unique<SliderAttachment>(apvts, "RELEASE", releaseSlider);
 
+
+
     setSliderParams(attackSlider);
     setSliderParams(decaySlider);
     setSliderParams(sustainSlider);
@@ -36,7 +39,7 @@ AdsrComponent::~AdsrComponent()
 
 void AdsrComponent::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
+    g.fillAll(OurColours::BaseColour);
 }
 
 void AdsrComponent::resized()
@@ -45,7 +48,7 @@ void AdsrComponent::resized()
     // components that your component contains..
 
     const auto bounds = getLocalBounds().reduced(10);
-    const auto padding = 10;
+    const auto padding = 15;
     const auto sliderWidth = bounds.getWidth() / 4 - padding;
     const auto sliderHeight = bounds.getHeight();
     const auto sliderStartX = 0;
@@ -59,7 +62,7 @@ void AdsrComponent::resized()
 
 void AdsrComponent::setSliderParams(juce::Slider& slider)
 {
-    slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+    slider.setSliderStyle(juce::CustomDial2::SliderStyle::LinearVertical);
+    slider.setTextBoxStyle(juce::CustomDial2::TextBoxBelow, true, 50, 25);
     addAndMakeVisible(slider);
 }

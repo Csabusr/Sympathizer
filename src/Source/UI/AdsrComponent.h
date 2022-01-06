@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "StyleSheet.h"
 
 //==============================================================================
 /*
@@ -25,10 +26,10 @@ public:
     void resized() override;
 
 private:
-    juce::Slider attackSlider;
-    juce::Slider decaySlider;
-    juce::Slider sustainSlider;
-    juce::Slider releaseSlider;
+    juce::CustomDial2 attackSlider;
+    juce::CustomDial2 decaySlider;
+    juce::CustomDial2 sustainSlider;
+    juce::CustomDial2 releaseSlider;
 
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 

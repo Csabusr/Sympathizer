@@ -16,6 +16,7 @@
         <FILE id="vbH3NX" name="AdsrComponent.cpp" compile="1" resource="0"
               file="Source/UI/AdsrComponent.cpp"/>
         <FILE id="oTtwdJ" name="AdsrComponent.h" compile="0" resource="0" file="Source/UI/AdsrComponent.h"/>
+        <FILE id="xOyv2g" name="Colours.h" compile="0" resource="0" file="Source/UI/Colours.h"/>
         <FILE id="fhkfDq" name="FilterComponent.cpp" compile="1" resource="0"
               file="Source/UI/FilterComponent.cpp"/>
         <FILE id="iTxdcI" name="FilterComponent.h" compile="0" resource="0"
@@ -25,6 +26,8 @@
         <FILE id="mPasNy" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="m7o4UN" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
+        <FILE id="GADyv0" name="StyleSheet.cpp" compile="1" resource="0" file="Source/UI/StyleSheet.cpp"/>
+        <FILE id="s6m0wc" name="StyleSheet.h" compile="0" resource="0" file="Source/UI/StyleSheet.h"/>
       </GROUP>
       <FILE id="psvBnf" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

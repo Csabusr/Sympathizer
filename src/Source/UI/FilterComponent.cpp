@@ -10,6 +10,8 @@
 
 #include <JuceHeader.h>
 #include "FilterComponent.h"
+#include "Colours.h"
+#include "StyleSheet.h"
 
 //==============================================================================
 FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& apvts, juce::String filterTypeSelectorId, juce::String filterCutoffId, juce::String filterResonanceId)
@@ -41,8 +43,8 @@ void FilterComponent::paint (juce::Graphics& g)
     auto bounds = getLocalBounds().reduced(5);
     auto labelSpace = bounds.removeFromTop(25.0f);
 
-    g.fillAll(juce::Colours::black);
-    g.setColour(juce::Colours::white);
+    g.fillAll(OurColours::BaseColour);
+    g.setColour(OurColours::BaseColourBrightest);
 
     g.setFont(20.0f);
     g.drawText("Filter", labelSpace.withX(5), juce::Justification::left);
@@ -82,8 +84,8 @@ void FilterComponent::setSliderWithLabel(juce::Slider& slider, juce::Label& labe
     label.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(label);
 
-    slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+    slider.setSliderStyle(juce::CustomDial2::SliderStyle::RotaryHorizontalVerticalDrag);
+    slider.setTextBoxStyle(juce::CustomDial2::TextBoxBelow, true, 50, 25);
     addAndMakeVisible(slider);
 
     attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, paramId, slider);
