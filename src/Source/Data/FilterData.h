@@ -16,7 +16,7 @@ class FilterData
 public:
     void perpareToPlay(double sampleRate, int samplesPerBlock, int numChannels);
     void process(juce::AudioBuffer<float>& buffer);
-    void updateParams(const int type, const float freq, const float resonance);
+    void updateParams(const int type, const float freq, const float resonance, const float mod = 1.0f);
     void reset();
 
 

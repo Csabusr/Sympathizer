@@ -12,9 +12,12 @@
 
 //==============================================================================
 SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudioProcessor& p)
-    : AudioProcessorEditor(&p), audioProcessor(p), adsr(audioProcessor.apvts),
-    osc(audioProcessor.apvts, "OSC1WAVETYPE"), fm(audioProcessor.apvts),
-    filter(audioProcessor.apvts, "FILTERTYPE", "FILTERCUTOFF", "FILTERRES")
+    : AudioProcessorEditor(&p), audioProcessor(p),
+    osc(audioProcessor.apvts, "OSC1WAVETYPE"),
+    adsr("Envelope", audioProcessor.apvts, "ATTACK", "DECAY", "SUSTAIN", "RELEASE"),
+    fm(audioProcessor.apvts),
+    filter(audioProcessor.apvts, "FILTERTYPE", "FILTERCUTOFF", "FILTERRES"),
+    modAdsr("Mod Envelope", audioProcessor.apvts, "MODATTACK", "MODDECAY", "MODSUSTAIN", "MODRELEASE")
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -23,12 +26,12 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
 
     addAndMakeVisible(myDial);
 
-
     setSize(700, 600);
     addAndMakeVisible(osc);
     addAndMakeVisible(adsr);
     addAndMakeVisible(fm);
     addAndMakeVisible(filter);
+    addAndMakeVisible(modAdsr);
 }
 
 SympathizerAudioProcessorEditor::~SympathizerAudioProcessorEditor()
@@ -54,4 +57,5 @@ void SympathizerAudioProcessorEditor::resized()
     osc.setBounds(10, 10, 100, 30);
     fm.setBounds(0, osc.getBottom() + 10, 300, 300);
     filter.setBounds(10, adsr.getBottom() + 10, 350, 200);
+    modAdsr.setBounds(filter.getRight(), adsr.getBottom() + 10, 350, 200);
 }

@@ -33,7 +33,7 @@ void FilterData::process(juce::AudioBuffer<float>& buffer)
     filter.process(juce::dsp::ProcessContextReplacing<float>{ filterBlock });
 }
 
-void FilterData::updateParams(const int type, const float freq, const float resonance)
+void FilterData::updateParams(const int type, const float freq, const float resonance, const float mod)
 {
     switch (type)
     {
@@ -50,9 +50,12 @@ void FilterData::updateParams(const int type, const float freq, const float reso
         break;
     }
 
-    filter.setCutoffFrequency(freq);
-    filter.setResonance(resonance);
+    float modFreq = freq * mod;
+    modFreq = std::fmax(modFreq, 20.f);
+    modFreq = std::fmin(modFreq, 20000.0f);
 
+    filter.setCutoffFrequency(modFreq);
+    filter.setResonance(resonance);
 
 }
 

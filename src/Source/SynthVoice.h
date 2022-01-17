@@ -14,6 +14,7 @@
 #include "SynthSound.h"
 #include "Data/AdsrData.h"
 #include "Data/OscData.h"
+#include "Data/FilterData.h"
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -32,12 +33,14 @@ public:
 
     void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
-    void update(const float attack, const float decay, const float sustain, const float release);
+    void updateAdsr(const float attack, const float decay, const float sustain, const float release);
+
+    void updateFilter(const int filterType, const float filterCutoff, const float filterRes);
+    void updateModAdsr(const float attack, const float decay, const float sustain, const float release);
 
     OscData& getOscillator() { return osc; }
 
 private:
-
     juce::AudioBuffer<float> synthBuffer;
     OscData osc;
 
@@ -50,8 +53,12 @@ private:
 
     // square wave
     //juce::dsp::Oscillator<float> osc{ [](float x) {return x < 0.0f ? -1.0f : 1.0f; } };
-    juce::dsp::Gain<float> gain;
+    
     AdsrData adsr;
+    FilterData filter;
+    AdsrData modAdsr;
+
+    juce::dsp::Gain<float> gain;
 
     bool isPrepared{ false };
 };

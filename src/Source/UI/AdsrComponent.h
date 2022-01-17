@@ -19,13 +19,15 @@
 class AdsrComponent : public juce::Component
 {
 public:
-    AdsrComponent(juce::AudioProcessorValueTreeState& apvts);
+    AdsrComponent(juce::String adsrName, juce::AudioProcessorValueTreeState& apvts, juce::String attackId, juce::String decayId, juce::String sustainId, juce::String releaseId);
     ~AdsrComponent() override;
 
     void paint(juce::Graphics&) override;
     void resized() override;
 
 private:
+    juce::String name = "";
+
     juce::CustomDial2 attackSlider;
     juce::CustomDial2 decaySlider;
     juce::CustomDial2 sustainSlider;
