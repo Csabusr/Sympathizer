@@ -23,15 +23,21 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     // editor's size to whatever you need it to be.
     juce::LookAndFeel::setDefaultLookAndFeel(&myCustomLNF);
 
+    gainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    gainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
 
+    gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "GAIN", gainSlider);
+
+    setSize(700, 700);
     addAndMakeVisible(myDial);
+    
 
-    setSize(700, 600);
     addAndMakeVisible(osc);
     addAndMakeVisible(adsr);
     addAndMakeVisible(fm);
     addAndMakeVisible(filter);
     addAndMakeVisible(modAdsr);
+    addAndMakeVisible(gainSlider);
 }
 
 SympathizerAudioProcessorEditor::~SympathizerAudioProcessorEditor()
@@ -58,4 +64,5 @@ void SympathizerAudioProcessorEditor::resized()
     fm.setBounds(0, osc.getBottom() + 10, 300, 300);
     filter.setBounds(10, adsr.getBottom() + 10, 350, 200);
     modAdsr.setBounds(filter.getRight(), adsr.getBottom() + 10, 350, 200);
+    gainSlider.setBounds(50, 600, 100, 100);
 }

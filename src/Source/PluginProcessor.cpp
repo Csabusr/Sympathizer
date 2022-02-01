@@ -202,6 +202,9 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     }
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    buffer.applyGain(*apvts.getRawParameterValue("GAIN"));
+
 }
 
 //==============================================================================
@@ -276,6 +279,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERRES", "Filter resonance", juce::NormalisableRange<float> {1.0f, 10.0f, 0.1f}, 1.0f));
 
+
+    //Gain
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
 
 
     return { params.begin(), params.end() };
