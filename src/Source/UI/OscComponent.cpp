@@ -17,7 +17,7 @@ OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, juce::Stri
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
-    juce::StringArray choices{ "Sine", "Saw", "Square" };
+    juce::StringArray choices{ "Sine", "Saw", "Square", "Triangle"};
     oscWaveSelector.addItemList(choices, 1);
     addAndMakeVisible(oscWaveSelector);
 

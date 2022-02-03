@@ -173,7 +173,7 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
-            //Amplitude
+            //Volume
             auto& attack = *apvts.getRawParameterValue("ATTACK");
             auto& decay = *apvts.getRawParameterValue("DECAY");
             auto& sustain = *apvts.getRawParameterValue("SUSTAIN");
@@ -245,9 +245,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
 
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC", "Oscillator", juce::StringArray{ "Sine", "Saw", "Square" }, 0));
-
-
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FMFREQ", "FM Frequency", juce::NormalisableRange<float> {0.0f, 10.0f, 0.01f, 0.5f}, 0.0f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FMDEPTH", "FM Depth", juce::NormalisableRange<float> {0.0f, 100.0f, 0.01f, 0.5f}, 0.0f));
@@ -271,11 +268,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MODRELEASE", "Mod Release", juce::NormalisableRange<float> {0.1f, 3.0f}, 0.4f));
 
 
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 wave type", juce::StringArray{ "Sine", "Saw", "Square" }, 0));
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle"}, 0));
 
     params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE", "Filter type", juce::StringArray{ "Low pass", "Band pass", "High pass" }, 0));
 
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERCUTOFF", "Filter cutoff freq", juce::NormalisableRange<float> {20.0f, 20000.0f, 1.0f, 0.5f}, 100.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERCUTOFF", "Filter cutoff freq", juce::NormalisableRange<float> {20.0f, 20000.0f, 1.0f, 0.5f}, 20000.0f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERRES", "Filter resonance", juce::NormalisableRange<float> {1.0f, 10.0f, 0.1f}, 1.0f));
 

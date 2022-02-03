@@ -29,6 +29,9 @@ void OscData::setWaveType(const int oscType)
         // square
         initialise([](float x) {return x < 0.0f ? -1.0f : 1.0f; });
         break;
+    case 3:
+        initialise([](float x) {return 1 - 2 * abs(x / juce::MathConstants<float>::pi); });
+        break;
     default:
         jassertfalse;
         break;

@@ -43,16 +43,6 @@ public:
 private:
     juce::AudioBuffer<float> synthBuffer;
     OscData osc;
-
-
-    // sine wave
-    //juce::dsp::Oscillator<float> osc{ [](float x) {return std::sin(x); } };
-
-    // saw wave
-    //juce::dsp::Oscillator<float> osc{ [](float x) {return x / juce::MathConstants<float>::pi; } };
-
-    // square wave
-    //juce::dsp::Oscillator<float> osc{ [](float x) {return x < 0.0f ? -1.0f : 1.0f; } };
     
     AdsrData adsr;
     FilterData filter;
