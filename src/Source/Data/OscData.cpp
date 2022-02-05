@@ -30,6 +30,7 @@ void OscData::setWaveType(const int oscType)
         initialise([](float x) {return x < 0.0f ? -1.0f : 1.0f; });
         break;
     case 3:
+        // triangle
         initialise([](float x) {return 1 - 2 * abs(x / juce::MathConstants<float>::pi); });
         break;
     default:
