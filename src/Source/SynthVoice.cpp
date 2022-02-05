@@ -18,7 +18,8 @@ bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
-    osc.setWaveFrequency(midiNoteNumber);
+    osc1.setWaveFrequency(midiNoteNumber);
+    osc2.setWaveFrequency(midiNoteNumber);
     adsr.noteOn();
     modAdsr.noteOn();
 }
@@ -53,15 +54,17 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
     spec.sampleRate = sampleRate;
     spec.numChannels = outputChannels;
 
-    osc.prepareToPlay(spec);
+    osc1.prepareToPlay(spec);
+    osc2.prepareToPlay(spec);
 
     adsr.setSampleRate(sampleRate);
 
     filter.perpareToPlay(sampleRate, samplesPerBlock, outputChannels);
     modAdsr.setSampleRate(sampleRate);
 
-    gain.prepare(spec);
-    gain.setGainLinear(0.3f);
+    osc1Gain.prepare(spec);
+    osc2Gain.prepare(spec);
+    
 
     isPrepared = true;
 }
@@ -82,6 +85,16 @@ void SynthVoice::updateModAdsr(const float attack, const float decay, const floa
     modAdsr.updateADSR(attack, decay, sustain, release);
 }
 
+void SynthVoice::updateOsc1Gain(const float gain)
+{
+    osc1Gain.setGainLinear(gain);
+}
+
+void SynthVoice::updateOsc2Gain(const float gain)
+{
+    osc2Gain.setGainLinear(gain);
+}
+
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
     jassert(isPrepared);
@@ -91,23 +104,40 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
         return;
     }
 
+    osc1Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    osc2Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     synthBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
 
     //Ahhoz hogy működjön a mod, meg kell hívni az applyEnvelopeToBuffer fv-t. De mivel nem szeretnénk ilyen módon
     //használni, ezért üres buffer-re alkalmazzuk.
     modAdsr.applyEnvelopeToBuffer(synthBuffer, 0, numSamples);
+
+
+    osc1Buffer.clear();
+    osc2Buffer.clear();
     synthBuffer.clear();
+
 
     // AudioBlock létrehozása úgy, hogy átadjuk neki az AudioBuffert.
     // Az AudioBlock itt nem hoz létre új adatot, az adat amit felhasznál azonos lesz a bufferrel, azaz pointerként működik.
 
-    juce::dsp::AudioBlock<float> audioBlock{ synthBuffer };
+    juce::dsp::AudioBlock<float> osc1AudioBlock{ osc1Buffer };
+    juce::dsp::AudioBlock<float> osc2AudioBlock{ osc2Buffer };
+    juce::dsp::AudioBlock<float> synthAudioBlock{ synthBuffer };
 
-    // ProcessContextReplacing megadása -- Kicseréljük teljesen az inputoto új sample-ekre
-    osc.getNextAudioBlock(audioBlock);
+    // ProcessContextReplacing megadása -- Kicseréljük teljesen az inputotot új sample-ekre
+    
+    osc1.getNextAudioBlock(osc1AudioBlock);
+    osc1Gain.process(juce::dsp::ProcessContextReplacing<float>(osc1AudioBlock));
+    osc2.getNextAudioBlock(osc2AudioBlock);
+    osc2Gain.process(juce::dsp::ProcessContextReplacing<float>(osc2AudioBlock));
+
+    synthAudioBlock.add(osc1AudioBlock);
+    synthAudioBlock.add(osc2AudioBlock);
+
+
     adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());
     filter.process(synthBuffer);
-    gain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
     
 
     for (int channel = 0; channel < outputBuffer.getNumChannels(); channel++)

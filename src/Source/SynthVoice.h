@@ -38,17 +38,32 @@ public:
     void updateFilter(const int filterType, const float filterCutoff, const float filterRes);
     void updateModAdsr(const float attack, const float decay, const float sustain, const float release);
 
-    OscData& getOscillator() { return osc; }
+    void updateOsc1Gain(const float gain);
+    void updateOsc2Gain(const float gain);
+
+
+    OscData& getOscillator1() { return osc1; }
+    OscData& getOscillator2() { return osc2; }
 
 private:
+
+
+
+    juce::AudioBuffer<float> osc1Buffer;
+    juce::AudioBuffer<float> osc2Buffer;
     juce::AudioBuffer<float> synthBuffer;
-    OscData osc;
+
+
+
+    OscData osc1;
+    OscData osc2;
     
     AdsrData adsr;
     FilterData filter;
     AdsrData modAdsr;
 
-    juce::dsp::Gain<float> gain;
+    juce::dsp::Gain<float> osc1Gain;
+    juce::dsp::Gain<float> osc2Gain;
 
     bool isPrepared{ false };
 };

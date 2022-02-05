@@ -59,6 +59,7 @@ void OscData::getNextAudioBlock(juce::dsp::AudioBlock<float>& block)
             fmMod = fmOsc.processSample(block.getSample(ch, s)) * fmDepth;
         }
     }
+
     process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 

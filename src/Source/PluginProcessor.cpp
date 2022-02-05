@@ -173,6 +173,10 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
+            auto& osc1WaveChoice = *apvts.getRawParameterValue("OSC1WAVETYPE");
+            auto& osc2WaveChoice = *apvts.getRawParameterValue("OSC2WAVETYPE");
+
+
             //Volume
             auto& attack = *apvts.getRawParameterValue("ATTACK");
             auto& decay = *apvts.getRawParameterValue("DECAY");
@@ -185,16 +189,28 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
             auto& modSustain = *apvts.getRawParameterValue("MODSUSTAIN");
             auto& modRelease = *apvts.getRawParameterValue("MODRELEASE");
 
-            auto& oscWaveChoice = *apvts.getRawParameterValue("OSC1WAVETYPE");
             auto& fmDepth = *apvts.getRawParameterValue("FMDEPTH");
             auto& fmFreq = *apvts.getRawParameterValue("FMFREQ");
+
+            //Filter
 
             auto& filterType = *apvts.getRawParameterValue("FILTERTYPE");
             auto& filterCutoff = *apvts.getRawParameterValue("FILTERCUTOFF");
             auto& filterRes = *apvts.getRawParameterValue("FILTERRES");
 
-            voice->getOscillator().setFmParams(fmDepth, fmFreq);
-            voice->getOscillator().setWaveType(oscWaveChoice);
+            //Gain
+
+            auto& osc1Gain = *apvts.getRawParameterValue("OSC1GAIN");
+            auto& osc2Gain = *apvts.getRawParameterValue("OSC2GAIN");
+
+            voice->getOscillator1().setFmParams(fmDepth, fmFreq);
+            voice->getOscillator1().setWaveType(osc1WaveChoice);
+            voice->getOscillator2().setFmParams(fmDepth, fmFreq);
+            voice->getOscillator2().setWaveType(osc2WaveChoice);
+
+            voice->updateOsc1Gain(osc1Gain);
+            voice->updateOsc2Gain(osc2Gain);
+
             voice->updateAdsr(attack.load(), decay.load(), sustain.load(), release.load());
             voice->updateFilter(filterType.load(), filterCutoff.load(), filterRes.load());
             voice->updateModAdsr(modAttack.load(), modDecay.load(), modSustain.load(), modRelease.load());
@@ -204,7 +220,6 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
     buffer.applyGain(*apvts.getRawParameterValue("GAIN"));
-
 }
 
 //==============================================================================
@@ -267,8 +282,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MODRELEASE", "Mod Release", juce::NormalisableRange<float> {0.1f, 3.0f}, 0.4f));
 
-
     params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle"}, 0));
+
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC2WAVETYPE", "Osc 2 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle" }, 0));
 
     params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE", "Filter type", juce::StringArray{ "Low pass", "Band pass", "High pass" }, 0));
 
@@ -276,8 +292,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERRES", "Filter resonance", juce::NormalisableRange<float> {1.0f, 10.0f, 0.1f}, 1.0f));
 
+    //OSC Gain
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1GAIN", "Osc 1 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
 
-    //Gain
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2GAIN", "Osc 2 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+
+
+    //Master Gain
     params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
 
 

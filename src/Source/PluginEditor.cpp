@@ -13,7 +13,8 @@
 //==============================================================================
 SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudioProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p),
-    osc(audioProcessor.apvts, "OSC1WAVETYPE"),
+    osc1(audioProcessor.apvts, "OSC1WAVETYPE"),
+    osc2(audioProcessor.apvts, "OSC2WAVETYPE"),
     adsr("Envelope", audioProcessor.apvts, "ATTACK", "DECAY", "SUSTAIN", "RELEASE"),
     fm(audioProcessor.apvts),
     filter(audioProcessor.apvts, "FILTERTYPE", "FILTERCUTOFF", "FILTERRES"),
@@ -23,16 +24,29 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     // editor's size to whatever you need it to be.
     juce::LookAndFeel::setDefaultLookAndFeel(&myCustomLNF);
 
+    osc1GainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    osc1GainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+
+    osc2GainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    osc2GainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+
     gainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     gainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
 
+    osc1GainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC1GAIN", osc1GainSlider);
+    osc2GainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC2GAIN", osc2GainSlider);
+
     gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "GAIN", gainSlider);
 
-    setSize(700, 700);
-    addAndMakeVisible(myDial);
-    
 
-    addAndMakeVisible(osc);
+
+    setSize(800, 700);
+    //addAndMakeVisible(myDial);
+    
+    addAndMakeVisible(osc1);
+    addAndMakeVisible(osc1GainSlider);
+    addAndMakeVisible(osc2);
+    addAndMakeVisible(osc2GainSlider);
     addAndMakeVisible(adsr);
     addAndMakeVisible(fm);
     addAndMakeVisible(filter);
@@ -59,10 +73,13 @@ void SympathizerAudioProcessorEditor::resized()
 
     //myDial.setBounds(getWidth() / 2 - 50, getHeight() / 2 - 50, 100, 100);
 
-    adsr.setBounds(300, osc.getBottom() + 10, 400, 340);
-    osc.setBounds(10, 10, 100, 30);
-    fm.setBounds(0, osc.getBottom() + 10, 300, 300);
-    filter.setBounds(10, adsr.getBottom() + 10, 350, 200);
-    modAdsr.setBounds(filter.getRight(), adsr.getBottom() + 10, 350, 200);
+    osc1.setBounds(10, 10, 100, 30);
+    osc2.setBounds(getWidth() / 2, 10, 100, 30);
+    adsr.setBounds(10, osc1.getBottom() + 10, 200, 150);
+    osc1GainSlider.setBounds(adsr.getRight() + 10, adsr.getY(), 150, 150);
+    osc2GainSlider.setBounds(getWidth() /2, adsr.getY(), 150, 150);
+    fm.setBounds(10, adsr.getBottom() + 10, 300, 150);
+    filter.setBounds(10, fm.getBottom() + 10, 350, 200);
+    modAdsr.setBounds(filter.getRight(), fm.getBottom() + 10, 350, 200);
     gainSlider.setBounds(50, 600, 100, 100);
 }

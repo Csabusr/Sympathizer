@@ -35,14 +35,22 @@ private:
     juce::CustomLNF myCustomLNF;
     juce::CustomDial myDial;
 
+
     SympathizerAudioProcessor& audioProcessor;
+    OscComponent osc1;
+    OscComponent osc2;
     AdsrComponent adsr;
-    OscComponent osc;
     FMComponent fm;
     FilterComponent filter;
     AdsrComponent modAdsr;
 
+    juce::Slider osc1GainSlider;
+    juce::Slider osc2GainSlider;
+
     juce::Slider gainSlider;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc1GainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2GainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
 
 
