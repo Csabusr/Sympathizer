@@ -19,7 +19,7 @@ bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
     osc1.setWaveFrequency(midiNoteNumber);
-    osc2.setWaveFrequency(midiNoteNumber);
+    osc2.setWaveFrequency(midiNoteNumber + osc2tuning);
     adsr.noteOn();
     modAdsr.noteOn();
 }
@@ -95,6 +95,11 @@ void SynthVoice::updateOsc2Gain(const float gain)
     osc2Gain.setGainLinear(gain);
 }
 
+void SynthVoice::updateTuning(const int tuning)
+{
+    osc2tuning = tuning;
+}
+
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
     jassert(isPrepared);
@@ -150,6 +155,5 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
     }
 
     modAdsr.getNextSample();
-
 }
 

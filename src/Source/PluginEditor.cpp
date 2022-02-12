@@ -30,11 +30,17 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     osc2GainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     osc2GainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
 
+    osc2TuningSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    osc2TuningSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+
+
     gainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     gainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
 
     osc1GainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC1GAIN", osc1GainSlider);
     osc2GainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC2GAIN", osc2GainSlider);
+
+    osc2TuningAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC2TUNING", osc2TuningSlider);
 
     gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "GAIN", gainSlider);
 
@@ -47,6 +53,7 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     addAndMakeVisible(osc1GainSlider);
     addAndMakeVisible(osc2);
     addAndMakeVisible(osc2GainSlider);
+    addAndMakeVisible(osc2TuningSlider);
     addAndMakeVisible(adsr);
     addAndMakeVisible(fm);
     addAndMakeVisible(filter);
@@ -78,6 +85,8 @@ void SympathizerAudioProcessorEditor::resized()
     adsr.setBounds(10, osc1.getBottom() + 10, 200, 150);
     osc1GainSlider.setBounds(adsr.getRight() + 10, adsr.getY(), 150, 150);
     osc2GainSlider.setBounds(getWidth() /2, adsr.getY(), 150, 150);
+    osc2TuningSlider.setBounds(getWidth() /2 + 150, adsr.getY(), 150, 150);
+
     fm.setBounds(10, adsr.getBottom() + 10, 300, 150);
     filter.setBounds(10, fm.getBottom() + 10, 350, 200);
     modAdsr.setBounds(filter.getRight(), fm.getBottom() + 10, 350, 200);

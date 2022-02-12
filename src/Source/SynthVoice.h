@@ -41,19 +41,16 @@ public:
     void updateOsc1Gain(const float gain);
     void updateOsc2Gain(const float gain);
 
+    void updateTuning(const int tuning);
+
 
     OscData& getOscillator1() { return osc1; }
     OscData& getOscillator2() { return osc2; }
 
 private:
-
-
-
     juce::AudioBuffer<float> osc1Buffer;
     juce::AudioBuffer<float> osc2Buffer;
     juce::AudioBuffer<float> synthBuffer;
-
-
 
     OscData osc1;
     OscData osc2;
@@ -61,6 +58,8 @@ private:
     AdsrData adsr;
     FilterData filter;
     AdsrData modAdsr;
+
+    int osc2tuning;
 
     juce::dsp::Gain<float> osc1Gain;
     juce::dsp::Gain<float> osc2Gain;

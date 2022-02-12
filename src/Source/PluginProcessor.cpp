@@ -193,21 +193,23 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
             auto& fmFreq = *apvts.getRawParameterValue("FMFREQ");
 
             //Filter
-
             auto& filterType = *apvts.getRawParameterValue("FILTERTYPE");
             auto& filterCutoff = *apvts.getRawParameterValue("FILTERCUTOFF");
             auto& filterRes = *apvts.getRawParameterValue("FILTERRES");
 
             //Gain
-
             auto& osc1Gain = *apvts.getRawParameterValue("OSC1GAIN");
             auto& osc2Gain = *apvts.getRawParameterValue("OSC2GAIN");
+
+            //Tuning
+            auto& osc2Tuning = *apvts.getRawParameterValue("OSC2TUNING");
 
             voice->getOscillator1().setFmParams(fmDepth, fmFreq);
             voice->getOscillator1().setWaveType(osc1WaveChoice);
             voice->getOscillator2().setFmParams(fmDepth, fmFreq);
             voice->getOscillator2().setWaveType(osc2WaveChoice);
 
+            voice->updateTuning(osc2Tuning);
             voice->updateOsc1Gain(osc1Gain);
             voice->updateOsc2Gain(osc2Gain);
 
@@ -264,7 +266,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FMDEPTH", "FM Depth", juce::NormalisableRange<float> {0.0f, 100.0f, 0.01f, 0.5f}, 0.0f));
 
-    //Amplitude
+    //Amplitude ADSR
     params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
@@ -282,6 +284,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MODRELEASE", "Mod Release", juce::NormalisableRange<float> {0.1f, 3.0f}, 0.4f));
 
+
+    //osc
+
     params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle"}, 0));
 
     params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC2WAVETYPE", "Osc 2 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle" }, 0));
@@ -296,6 +301,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1GAIN", "Osc 1 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2GAIN", "Osc 2 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+
+    //OSC 2 Tuning
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2TUNING", "Osc 2 tuning", 0, 12, 0));
 
 
     //Master Gain

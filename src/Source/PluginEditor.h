@@ -47,10 +47,13 @@ private:
     juce::Slider osc1GainSlider;
     juce::Slider osc2GainSlider;
 
+    juce::Slider osc2TuningSlider;
+
     juce::Slider gainSlider;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc1GainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2GainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2TuningAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
 
 
