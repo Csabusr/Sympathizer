@@ -39,6 +39,7 @@ private:
     SympathizerAudioProcessor& audioProcessor;
     OscComponent osc1;
     OscComponent osc2;
+    OscComponent osc3;
     AdsrComponent adsr;
     FMComponent fm;
     FilterComponent filter;
@@ -46,14 +47,18 @@ private:
 
     juce::Slider osc1GainSlider;
     juce::Slider osc2GainSlider;
+    juce::Slider osc3GainSlider;
 
     juce::Slider osc2TuningSlider;
+    juce::Slider osc3TuningSlider;
 
     juce::Slider gainSlider;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc1GainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2GainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc3GainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2TuningAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc3TuningAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
 
 

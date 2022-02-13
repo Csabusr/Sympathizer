@@ -19,7 +19,8 @@ bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
     osc1.setWaveFrequency(midiNoteNumber);
-    osc2.setWaveFrequency(midiNoteNumber + osc2tuning);
+    osc2.setWaveFrequency(midiNoteNumber + osc2tuning - 24);
+    osc3.setWaveFrequency(midiNoteNumber + osc3tuning - 24);
     adsr.noteOn();
     modAdsr.noteOn();
 }
@@ -56,6 +57,7 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
 
     osc1.prepareToPlay(spec);
     osc2.prepareToPlay(spec);
+    osc3.prepareToPlay(spec);
 
     adsr.setSampleRate(sampleRate);
 
@@ -64,6 +66,7 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
 
     osc1Gain.prepare(spec);
     osc2Gain.prepare(spec);
+    osc3Gain.prepare(spec);
     
 
     isPrepared = true;
@@ -95,9 +98,19 @@ void SynthVoice::updateOsc2Gain(const float gain)
     osc2Gain.setGainLinear(gain);
 }
 
-void SynthVoice::updateTuning(const int tuning)
+void SynthVoice::updateOsc3Gain(const float gain)
+{
+    osc3Gain.setGainLinear(gain);
+}
+
+void SynthVoice::updateOsc2Tuning(const int tuning)
 {
     osc2tuning = tuning;
+}
+
+void SynthVoice::updateOsc3Tuning(const int tuning)
+{
+    osc3tuning = tuning;
 }
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
@@ -111,6 +124,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
     osc1Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     osc2Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    osc3Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     synthBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
 
     //Ahhoz hogy működjön a mod, meg kell hívni az applyEnvelopeToBuffer fv-t. De mivel nem szeretnénk ilyen módon
@@ -120,6 +134,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
     osc1Buffer.clear();
     osc2Buffer.clear();
+    osc3Buffer.clear();
     synthBuffer.clear();
 
 
@@ -128,6 +143,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
     juce::dsp::AudioBlock<float> osc1AudioBlock{ osc1Buffer };
     juce::dsp::AudioBlock<float> osc2AudioBlock{ osc2Buffer };
+    juce::dsp::AudioBlock<float> osc3AudioBlock{ osc3Buffer };
     juce::dsp::AudioBlock<float> synthAudioBlock{ synthBuffer };
 
     // ProcessContextReplacing megadása -- Kicseréljük teljesen az inputotot új sample-ekre
@@ -136,9 +152,12 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
     osc1Gain.process(juce::dsp::ProcessContextReplacing<float>(osc1AudioBlock));
     osc2.getNextAudioBlock(osc2AudioBlock);
     osc2Gain.process(juce::dsp::ProcessContextReplacing<float>(osc2AudioBlock));
+    osc3.getNextAudioBlock(osc3AudioBlock);
+    osc3Gain.process(juce::dsp::ProcessContextReplacing<float>(osc3AudioBlock));
 
     synthAudioBlock.add(osc1AudioBlock);
     synthAudioBlock.add(osc2AudioBlock);
+    synthAudioBlock.add(osc3AudioBlock);
 
 
     adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());

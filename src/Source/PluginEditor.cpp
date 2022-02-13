@@ -15,6 +15,7 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     : AudioProcessorEditor(&p), audioProcessor(p),
     osc1(audioProcessor.apvts, "OSC1WAVETYPE"),
     osc2(audioProcessor.apvts, "OSC2WAVETYPE"),
+    osc3(audioProcessor.apvts, "OSC3WAVETYPE"),
     adsr("Envelope", audioProcessor.apvts, "ATTACK", "DECAY", "SUSTAIN", "RELEASE"),
     fm(audioProcessor.apvts),
     filter(audioProcessor.apvts, "FILTERTYPE", "FILTERCUTOFF", "FILTERRES"),
@@ -30,8 +31,14 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     osc2GainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     osc2GainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
 
+    osc3GainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    osc3GainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+
     osc2TuningSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     osc2TuningSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+
+    osc3TuningSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    osc3TuningSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
 
 
     gainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
@@ -39,8 +46,10 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
 
     osc1GainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC1GAIN", osc1GainSlider);
     osc2GainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC2GAIN", osc2GainSlider);
+    osc3GainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC3GAIN", osc3GainSlider);
 
     osc2TuningAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC2TUNING", osc2TuningSlider);
+    osc3TuningAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "OSC3TUNING", osc3TuningSlider);
 
     gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "GAIN", gainSlider);
 
@@ -54,6 +63,9 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     addAndMakeVisible(osc2);
     addAndMakeVisible(osc2GainSlider);
     addAndMakeVisible(osc2TuningSlider);
+    addAndMakeVisible(osc3);
+    addAndMakeVisible(osc3GainSlider);
+    addAndMakeVisible(osc3TuningSlider);
     addAndMakeVisible(adsr);
     addAndMakeVisible(fm);
     addAndMakeVisible(filter);
@@ -86,6 +98,10 @@ void SympathizerAudioProcessorEditor::resized()
     osc1GainSlider.setBounds(adsr.getRight() + 10, adsr.getY(), 150, 150);
     osc2GainSlider.setBounds(getWidth() /2, adsr.getY(), 150, 150);
     osc2TuningSlider.setBounds(getWidth() /2 + 150, adsr.getY(), 150, 150);
+
+    osc3.setBounds(getWidth() / 2, 210, 100, 30);
+    osc3GainSlider.setBounds(getWidth() / 2, osc3.getY() + 20, 150, 150);
+    osc3TuningSlider.setBounds(getWidth() / 2 + 150, osc3.getY(), 150, 150);
 
     fm.setBounds(10, adsr.getBottom() + 10, 300, 150);
     filter.setBounds(10, fm.getBottom() + 10, 350, 200);

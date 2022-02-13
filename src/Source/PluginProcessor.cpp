@@ -173,8 +173,9 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
-            auto& osc1WaveChoice = *apvts.getRawParameterValue("OSC1WAVETYPE");
-            auto& osc2WaveChoice = *apvts.getRawParameterValue("OSC2WAVETYPE");
+            auto& osc1WaveType = *apvts.getRawParameterValue("OSC1WAVETYPE");
+            auto& osc2WaveType = *apvts.getRawParameterValue("OSC2WAVETYPE");
+            auto& osc3WaveType = *apvts.getRawParameterValue("OSC3WAVETYPE");
 
 
             //Volume
@@ -200,18 +201,26 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
             //Gain
             auto& osc1Gain = *apvts.getRawParameterValue("OSC1GAIN");
             auto& osc2Gain = *apvts.getRawParameterValue("OSC2GAIN");
+            auto& osc3Gain = *apvts.getRawParameterValue("OSC3GAIN");
 
             //Tuning
             auto& osc2Tuning = *apvts.getRawParameterValue("OSC2TUNING");
+            auto& osc3Tuning = *apvts.getRawParameterValue("OSC3TUNING");
 
             voice->getOscillator1().setFmParams(fmDepth, fmFreq);
-            voice->getOscillator1().setWaveType(osc1WaveChoice);
+            voice->getOscillator1().setWaveType(osc1WaveType);
             voice->getOscillator2().setFmParams(fmDepth, fmFreq);
-            voice->getOscillator2().setWaveType(osc2WaveChoice);
+            voice->getOscillator2().setWaveType(osc2WaveType);
+            voice->getOscillator3().setFmParams(fmDepth, fmFreq);
+            voice->getOscillator3().setWaveType(osc3WaveType);
 
-            voice->updateTuning(osc2Tuning);
+            voice->updateOsc2Tuning(osc2Tuning);
+            voice->updateOsc3Tuning(osc3Tuning);
+
+
             voice->updateOsc1Gain(osc1Gain);
             voice->updateOsc2Gain(osc2Gain);
+            voice->updateOsc3Gain(osc3Gain);
 
             voice->updateAdsr(attack.load(), decay.load(), sustain.load(), release.load());
             voice->updateFilter(filterType.load(), filterCutoff.load(), filterRes.load());
@@ -261,7 +270,25 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
+    //osc
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle" }, 0));
 
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC2WAVETYPE", "Osc 2 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle" }, 0));
+
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC3WAVETYPE", "Osc 3 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle" }, 0));
+
+    //OSC Gain
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1GAIN", "Osc 1 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2GAIN", "Osc 2 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC3GAIN", "Osc 3 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+
+    //OSC Tuning
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2TUNING", "Osc 2 tuning", 0, 48, 24));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC3TUNING", "Osc 3 tuning", 0, 48, 24));
+
+    //FM 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FMFREQ", "FM Frequency", juce::NormalisableRange<float> {0.0f, 10.0f, 0.01f, 0.5f}, 0.0f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FMDEPTH", "FM Depth", juce::NormalisableRange<float> {0.0f, 100.0f, 0.01f, 0.5f}, 0.0f));
@@ -275,7 +302,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", juce::NormalisableRange<float> {0.1f, 3.0f}, 0.4f));
 
-    // Filter
+    //Filter
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE", "Filter type", juce::StringArray{ "Low pass", "Band pass", "High pass" }, 0));
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERCUTOFF", "Filter cutoff freq", juce::NormalisableRange<float> {20.0f, 20000.0f, 1.0f, 0.5f}, 20000.0f));
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERRES", "Filter resonance", juce::NormalisableRange<float> {1.0f, 10.0f, 0.1f}, 1.0f));
+
+    //Filter ADSR
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MODATTACK", "Mod Attack", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MODDECAY", "Mod Decay", juce::NormalisableRange<float> {0.1f, 1.0f}, 0.1f));
@@ -283,27 +317,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MODSUSTAIN", "Mod Sustain", juce::NormalisableRange<float> {0.1f, 1.0f}, 1.0f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MODRELEASE", "Mod Release", juce::NormalisableRange<float> {0.1f, 3.0f}, 0.4f));
-
-
-    //osc
-
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle"}, 0));
-
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC2WAVETYPE", "Osc 2 wave type", juce::StringArray{ "Sine", "Saw", "Square", "Triangle" }, 0));
-
-    params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE", "Filter type", juce::StringArray{ "Low pass", "Band pass", "High pass" }, 0));
-
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERCUTOFF", "Filter cutoff freq", juce::NormalisableRange<float> {20.0f, 20000.0f, 1.0f, 0.5f}, 20000.0f));
-
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("FILTERRES", "Filter resonance", juce::NormalisableRange<float> {1.0f, 10.0f, 0.1f}, 1.0f));
-
-    //OSC Gain
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1GAIN", "Osc 1 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
-
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2GAIN", "Osc 2 gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
-
-    //OSC 2 Tuning
-    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2TUNING", "Osc 2 tuning", 0, 12, 0));
 
 
     //Master Gain
