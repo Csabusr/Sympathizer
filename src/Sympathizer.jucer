@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="HvzsdM" name="Sympathizer" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="hCiG1h" name="Sympathizer">
     <GROUP id="{041631EF-99DD-1665-AD43-113A29BE6DA7}" name="Source">
       <GROUP id="{7E220A36-56DC-6FB9-631A-A9B8BBC5C680}" name="Data">
