@@ -47,7 +47,7 @@ void OscData::prepareToPlay(juce::dsp::ProcessSpec& spec)
 
 void OscData::setWaveFrequency(const int midiNoteNumber)
 {
-    setFrequency(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber) + fmMod);
+    setFrequency(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber) + fmMod, true);
     currentMidiNote = midiNoteNumber;
 }
 
