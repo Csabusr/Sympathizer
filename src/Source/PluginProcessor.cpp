@@ -29,6 +29,8 @@ SympathizerAudioProcessor::SympathizerAudioProcessor()
     synth.addVoice(new SynthVoice());
     synth.addVoice(new SynthVoice());
     synth.addVoice(new SynthVoice());
+    synth.addVoice(new SynthVoice());
+    synth.addVoice(new SynthVoice());
 }
 
 SympathizerAudioProcessor::~SympathizerAudioProcessor()
