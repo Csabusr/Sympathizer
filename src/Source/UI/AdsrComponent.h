@@ -28,10 +28,10 @@ public:
 private:
     juce::String name = "";
 
-    juce::CustomDial2 attackSlider;
-    juce::CustomDial2 decaySlider;
-    juce::CustomDial2 sustainSlider;
-    juce::CustomDial2 releaseSlider;
+    juce::CustomLinearSliderWithLabel attackSlider;
+    juce::CustomLinearSliderWithLabel decaySlider;
+    juce::CustomLinearSliderWithLabel sustainSlider;
+    juce::CustomLinearSliderWithLabel releaseSlider;
 
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
