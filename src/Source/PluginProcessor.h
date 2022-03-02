@@ -16,6 +16,7 @@
 //==============================================================================
 /**
 */
+
 class SympathizerAudioProcessor : public juce::AudioProcessor
 {
 public:

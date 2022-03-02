@@ -16,9 +16,11 @@
 #include "UI/StyleSheet.h"
 #include "UI/FilterComponent.h"
 
+
 //==============================================================================
 /**
 */
+
 class SympathizerAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
@@ -64,3 +66,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SympathizerAudioProcessorEditor)
 };
+
+

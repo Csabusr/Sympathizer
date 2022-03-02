@@ -11,8 +11,17 @@
 #include <JuceHeader.h>
 #include "Colours.h"
 #include "AdsrComponent.h"
+#include "StyleSheet.h"
 
 //==============================================================================
+
+juce::AudioProcessorValueTreeState& rounde(juce::AudioProcessorValueTreeState& var)
+{
+    //TODO KEREKÍTÉS
+    return var;
+}
+
+
 AdsrComponent::AdsrComponent(juce::String adsrName, juce::AudioProcessorValueTreeState& apvts, juce::String attackId, juce::String decayId, juce::String sustainId, juce::String releaseId)
 {
     // In your constructor, you should add any child components, and
@@ -22,10 +31,10 @@ AdsrComponent::AdsrComponent(juce::String adsrName, juce::AudioProcessorValueTre
 
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
-    attackAttachment = std::make_unique<SliderAttachment>(apvts, attackId, attackSlider);
-    decayAttachment = std::make_unique<SliderAttachment>(apvts, decayId, decaySlider);
-    sustainAttachment = std::make_unique<SliderAttachment>(apvts, sustainId, sustainSlider);
-    releaseAttachment = std::make_unique<SliderAttachment>(apvts, releaseId, releaseSlider);
+    attackAttachment = std::make_unique<SliderAttachment>(rounde(apvts), attackId, attackSlider);
+    decayAttachment = std::make_unique<SliderAttachment>(rounde(apvts), decayId, decaySlider);
+    sustainAttachment = std::make_unique<SliderAttachment>(rounde(apvts), sustainId, sustainSlider);
+    releaseAttachment = std::make_unique<SliderAttachment>(rounde(apvts), releaseId, releaseSlider);
 
 
 
@@ -64,7 +73,6 @@ void AdsrComponent::resized()
 
 void AdsrComponent::setSliderParams(juce::Slider& slider)
 {
-    slider.setSliderStyle(juce::CustomDial2::SliderStyle::LinearVertical);
-    slider.setTextBoxStyle(juce::CustomDial2::TextBoxBelow, true, 50, 25);
     addAndMakeVisible(slider);
 }
+
