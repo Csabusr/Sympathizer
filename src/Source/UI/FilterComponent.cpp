@@ -25,7 +25,6 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& apvts, juce
     filterSelectorLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
     filterSelectorLabel.setFont(15.0f);
     filterSelectorLabel.setJustificationType(juce::Justification::left);
-
     addAndMakeVisible(filterSelectorLabel);
 
 
@@ -77,15 +76,13 @@ using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
 void FilterComponent::setSliderWithLabel(juce::Slider& slider, juce::Label& label, juce::AudioProcessorValueTreeState& apvts, juce::String paramId, std::unique_ptr<Attachment>& attachment)
 {
-    
-
     label.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
     label.setFont(15.0f);
     label.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(label);
 
     slider.setSliderStyle(juce::CustomDial2::SliderStyle::RotaryHorizontalVerticalDrag);
-    slider.setTextBoxStyle(juce::CustomDial2::TextBoxBelow, true, 50, 25);
+    slider.setTextBoxStyle(juce::CustomDial2::TextBoxBelow,true,80,25);
     addAndMakeVisible(slider);
 
     attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, paramId, slider);
