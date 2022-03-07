@@ -92,21 +92,21 @@ void SympathizerAudioProcessorEditor::resized()
     juce::CustomLNF myCustomLNF;
 
     //myDial.setBounds(getWidth() / 2 - 50, getHeight() / 2 - 50, 100, 100);
-    //right side
-    osc1.setBounds(getWidth() / 2, 10, 100, 30);
-    osc1GainSlider.setBounds(getWidth() / 2, osc1.getY() + 30, 150, 150);
-    fm.setBounds(osc1GainSlider.getRight() + 10, osc1GainSlider.getY() , 300, 150);
-    osc2.setBounds(getWidth() / 2, 160, 100, 30);
-    osc2GainSlider.setBounds(getWidth() / 2, osc2.getY() + 30, 150, 150);
+    osc1.setBounds(10, 10, 100, 30);
+    adsr.setBounds(10, osc1.getBottom() + 10, 200, 150);
+    osc1GainSlider.setBounds(10, adsr.getBottom()+ 10, 150, 150);
+    gainSlider.setBounds(adsr.getRight()+10, 10, 100, 100);
+    fm.setBounds(osc1GainSlider.getRight() + 10, osc1GainSlider.getY() , 200, 150);
+
+    osc2.setBounds(getWidth() / 2, 10, 100, 30);
+    osc2GainSlider.setBounds((getWidth() / 2), osc2.getBottom() + 10, 150, 150);
     osc2TuningSlider.setBounds(osc2GainSlider.getRight() + 10, osc2GainSlider.getY(), 150, 150);
-    osc3.setBounds(getWidth() / 2, 310, 100, 30);
-    osc3GainSlider.setBounds(getWidth() / 2, osc3.getY() + 30, 150, 150);
+
+    osc3.setBounds(getWidth() / 2, osc2TuningSlider.getBottom()+10, 100, 30);
+    osc3GainSlider.setBounds((getWidth() / 2), osc3.getBottom() + 10, 150, 150);
     osc3TuningSlider.setBounds(osc3GainSlider.getRight() + 10, osc3GainSlider.getY(), 150, 150);
 
     modAdsr.setBounds(getWidth() / 2, osc3TuningSlider.getBottom() + 30, 350, 200);
 
-    //left side
-    gainSlider.setBounds(200, 10, 100, 100);
-    adsr.setBounds(10, 10, 200, 150);
-    filter.setBounds(10, adsr.getBottom() + 10, 350, 200);
+    filter.setBounds(10, osc1GainSlider.getBottom() + 10, 350, 200);
 }
