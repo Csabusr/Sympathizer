@@ -55,7 +55,7 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
 
 
 
-    setSize(900, 800);
+    setSize(770, 800);
     //addAndMakeVisible(myDial);
     
     addAndMakeVisible(osc1);
@@ -81,8 +81,29 @@ SympathizerAudioProcessorEditor::~SympathizerAudioProcessorEditor()
 //==============================================================================
 void SympathizerAudioProcessorEditor::paint(juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
+    auto bounds = getLocalBounds().reduced(5);
+    auto labelSpace = bounds.removeFromTop(25.0f);
+
     g.fillAll(OurColours::BaseColour);
+    g.setColour(OurColours::HighlightColor);
+
+    g.setFont(20.0f);
+    g.drawText("FILTER", 345, 440, 60, 20, juce::Justification::left);
+    g.drawRoundedRectangle(20, 430, 730, 260, 5.0f, 2.0f);
+
+    g.drawText("FILTER", 345, 440, 60, 20, juce::Justification::left);
+    g.drawRoundedRectangle(20, 10, 410, 370, 5.0f, 2.0f);
+
+    g.drawText("OSC2", 565, 20, 50, 20, juce::Justification::left);
+    g.drawRoundedRectangle(430, 10, 320, 210, 5.0f, 2.0f);
+
+    g.drawText("OSC3", 565, 230, 50, 20, juce::Justification::left);
+    g.drawRoundedRectangle(430, 220, 320, 210, 5.0f, 2.0f);
+
+    g.setFont(40.0f);
+
+    g.drawRoundedRectangle(20, 380, 410, 50, 5.0f, 2.0f);
+    g.drawText("SYMPATHIZER", 100, 375, 250, 60, juce::Justification::left);
 
 }
 
@@ -92,21 +113,21 @@ void SympathizerAudioProcessorEditor::resized()
     juce::CustomLNF myCustomLNF;
 
     //myDial.setBounds(getWidth() / 2 - 50, getHeight() / 2 - 50, 100, 100);
-    osc1.setBounds(10, 10, 100, 30);
-    adsr.setBounds(10, osc1.getBottom() + 10, 200, 150);
-    osc1GainSlider.setBounds(10, adsr.getBottom()+ 10, 150, 150);
-    gainSlider.setBounds(adsr.getRight()+10, 10, 100, 100);
-    fm.setBounds(osc1GainSlider.getRight() + 10, osc1GainSlider.getY() , 200, 150);
+    osc1.setBounds(30, 20, 100, 30);
+    adsr.setBounds(osc1.getX()+10, osc1.getBottom() + 10, 200, 150);
+    osc1GainSlider.setBounds(30, adsr.getBottom()+ 10, 150, 150);
+    gainSlider.setBounds(adsr.getRight() + 20, 80, 100, 100);
+    fm.setBounds(osc1GainSlider.getRight() + 40, osc1GainSlider.getY(), 200, 150);
 
-    osc2.setBounds(getWidth() / 2, 10, 100, 30);
-    osc2GainSlider.setBounds((getWidth() / 2), osc2.getBottom() + 10, 150, 150);
+    osc2.setBounds(getWidth() / 2+50, 20, 100, 30);
+    osc2GainSlider.setBounds((getWidth() / 2)+50, osc2.getBottom() + 10, 150, 150);
     osc2TuningSlider.setBounds(osc2GainSlider.getRight() + 10, osc2GainSlider.getY(), 150, 150);
 
-    osc3.setBounds(getWidth() / 2, osc2TuningSlider.getBottom()+10, 100, 30);
-    osc3GainSlider.setBounds((getWidth() / 2), osc3.getBottom() + 10, 150, 150);
+    osc3.setBounds(getWidth() / 2+60, osc2TuningSlider.getBottom()+20, 100, 30);
+    osc3GainSlider.setBounds((getWidth() / 2)+50, osc3.getBottom() + 10, 150, 150);
     osc3TuningSlider.setBounds(osc3GainSlider.getRight() + 10, osc3GainSlider.getY(), 150, 150);
 
-    modAdsr.setBounds(getWidth() / 2, osc3TuningSlider.getBottom() + 30, 350, 200);
+    modAdsr.setBounds((getWidth() / 2), osc3TuningSlider.getBottom() + 50, 350, 200);
 
-    filter.setBounds(10, osc1GainSlider.getBottom() + 10, 350, 200);
+    filter.setBounds(25, osc3TuningSlider.getBottom() + 40, 300, 190);
 }

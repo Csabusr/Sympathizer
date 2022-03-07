@@ -39,34 +39,24 @@ FilterComponent::~FilterComponent()
 
 void FilterComponent::paint (juce::Graphics& g)
 {
-    auto bounds = getLocalBounds().reduced(5);
-    auto labelSpace = bounds.removeFromTop(25.0f);
-
     g.fillAll(OurColours::BaseColour);
-    g.setColour(OurColours::BaseColourBrightest);
-
-    g.setFont(20.0f);
-    g.drawText("Filter", labelSpace.withX(5), juce::Justification::left);
-    g.drawRoundedRectangle(bounds.toFloat(), 5.0f, 2.0f);
-
-
 }
 
 void FilterComponent::resized()
 {
-    const auto startY = 55;
+    const auto startY = 10;
     const auto sliderWidth = 100;
     const auto sliderHeight = 90;
     const auto labelYOffset = 20;
     const auto labelHeight = 20;
 
-    filterTypeSelector.setBounds(10, startY + 5, 90, 30);
-    filterSelectorLabel.setBounds(10, startY - labelYOffset, 90, labelHeight);
+    filterTypeSelector.setBounds(30, startY + 10, 90, 30);
+    filterSelectorLabel.setBounds(filterTypeSelector.getX(), filterTypeSelector.getY() - labelYOffset, 90, labelHeight);
 
-    filterCutoffSlider.setBounds(filterTypeSelector.getRight(), startY, sliderWidth, sliderHeight);
+    filterCutoffSlider.setBounds(filterTypeSelector.getX(), filterTypeSelector.getBottom() + 40, sliderWidth, sliderHeight);
     filterCutoffLabel.setBounds(filterCutoffSlider.getX(), filterCutoffSlider.getY() - labelYOffset, filterCutoffSlider.getWidth(), labelHeight);
 
-    filterResonanceSlider.setBounds(filterCutoffSlider.getRight(), startY, sliderWidth, sliderHeight);
+    filterResonanceSlider.setBounds(filterCutoffSlider.getRight()+20, filterCutoffSlider.getY(), sliderWidth, sliderHeight);
     filterResonanceLabel.setBounds(filterResonanceSlider.getX(), filterResonanceSlider.getY() - labelYOffset, filterResonanceSlider.getWidth(), labelHeight);
 
 
