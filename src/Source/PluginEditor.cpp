@@ -19,7 +19,8 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     adsr("Envelope", audioProcessor.apvts, "ATTACK", "DECAY", "SUSTAIN", "RELEASE"),
     fm(audioProcessor.apvts),
     filter(audioProcessor.apvts, "FILTERTYPE", "FILTERCUTOFF", "FILTERRES"),
-    modAdsr("Mod Envelope", audioProcessor.apvts, "MODATTACK", "MODDECAY", "MODSUSTAIN", "MODRELEASE")
+    modAdsr("Mod Envelope", audioProcessor.apvts, "MODATTACK", "MODDECAY", "MODSUSTAIN", "MODRELEASE"),
+    midiKeyboardComponent(audioProcessor.keyboardState,juce::MidiKeyboardComponent::Orientation::horizontalKeyboard)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -71,6 +72,7 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
     addAndMakeVisible(filter);
     addAndMakeVisible(modAdsr);
     addAndMakeVisible(gainSlider);
+    addAndMakeVisible(midiKeyboardComponent);
 }
 
 SympathizerAudioProcessorEditor::~SympathizerAudioProcessorEditor()
@@ -130,4 +132,6 @@ void SympathizerAudioProcessorEditor::resized()
     modAdsr.setBounds((getWidth() / 2), osc3TuningSlider.getBottom() + 50, 350, 200);
 
     filter.setBounds(25, osc3TuningSlider.getBottom() + 40, 300, 190);
+
+    midiKeyboardComponent.setBounds(0, 700, 770, 100);
 }

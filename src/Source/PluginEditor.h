@@ -47,6 +47,8 @@ private:
     FilterComponent filter;
     AdsrComponent modAdsr;
 
+    juce::MidiKeyboardComponent midiKeyboardComponent;
+
     juce::Slider osc1GainSlider;
     juce::Slider osc2GainSlider;
     juce::Slider osc3GainSlider;

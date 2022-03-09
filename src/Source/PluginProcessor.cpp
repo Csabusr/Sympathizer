@@ -156,6 +156,8 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
+
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -334,6 +336,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout SympathizerAudioProcessor::c
 
     //Master Gain
     params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+
 
 
     return { params.begin(), params.end() };

@@ -24,10 +24,6 @@
               file="Source/UI/FilterComponent.h"/>
         <FILE id="eoqw99" name="FMComponent.cpp" compile="1" resource="0" file="Source/UI/FMComponent.cpp"/>
         <FILE id="UUHIs5" name="FMComponent.h" compile="0" resource="0" file="Source/UI/FMComponent.h"/>
-        <FILE id="bQPaCi" name="MidiKeyboardComponent.cpp" compile="1" resource="0"
-              file="Source/UI/MidiKeyboardComponent.cpp"/>
-        <FILE id="yCfz4U" name="MidiKeyboardComponent.h" compile="0" resource="0"
-              file="Source/UI/MidiKeyboardComponent.h"/>
         <FILE id="mPasNy" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="m7o4UN" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>

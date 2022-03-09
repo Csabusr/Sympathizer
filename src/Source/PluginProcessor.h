@@ -59,6 +59,9 @@ public:
 
     juce::AudioProcessorValueTreeState apvts;
 
+    //==============================================================================
+    juce::MidiKeyboardState keyboardState;
+
 private:
     juce::Synthesiser synth;
     FilterData filter;
