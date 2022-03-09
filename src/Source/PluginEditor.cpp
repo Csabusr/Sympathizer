@@ -56,7 +56,7 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
 
 
 
-    setSize(770, 800);
+    setSize(770, 820);
     //addAndMakeVisible(myDial);
     
     addAndMakeVisible(osc1);
@@ -133,5 +133,5 @@ void SympathizerAudioProcessorEditor::resized()
 
     filter.setBounds(25, osc3TuningSlider.getBottom() + 40, 300, 190);
 
-    midiKeyboardComponent.setBounds(0, 700, 770, 100);
+    midiKeyboardComponent.setBounds(20, 700, 730, 100);
 }
