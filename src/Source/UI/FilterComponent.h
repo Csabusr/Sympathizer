@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "StyleSheet.h"
 
 //==============================================================================
 /*
@@ -25,9 +26,9 @@ public:
     void resized() override;
 
 private:
-    juce::ComboBox filterTypeSelector{"Filter type"};
-    juce::Slider filterCutoffSlider;
-    juce::Slider filterResonanceSlider;
+    juce::drawCustomComboBox filterTypeSelector;
+    juce::CustomDial2 filterCutoffSlider;
+    juce::CustomDial2 filterResonanceSlider;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> filterTypeSelectorAttachment;
 
@@ -37,7 +38,6 @@ private:
     std::unique_ptr<Attachment> filterCutoffAttachment;
     std::unique_ptr<Attachment> filterResonanceAttachment;
 
-    juce::Label filterSelectorLabel{ "fltr_type", "Filter type"};
     juce::Label filterCutoffLabel{"fltr_cutoff_freq", "Filter cutoff freq"};
     juce::Label filterResonanceLabel{"fltr_res", "Filter resonance"};
 

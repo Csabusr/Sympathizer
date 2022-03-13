@@ -22,12 +22,6 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& apvts, juce
 
     filterTypeSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(apvts, filterTypeSelectorId, filterTypeSelector);
 
-    filterSelectorLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
-    filterSelectorLabel.setFont(15.0f);
-    filterSelectorLabel.setJustificationType(juce::Justification::left);
-    addAndMakeVisible(filterSelectorLabel);
-
-
     setSliderWithLabel(filterCutoffSlider, filterCutoffLabel, apvts, filterCutoffId, filterCutoffAttachment);
     setSliderWithLabel(filterResonanceSlider, filterResonanceLabel, apvts, filterResonanceId, filterResonanceAttachment);
 
@@ -39,7 +33,7 @@ FilterComponent::~FilterComponent()
 
 void FilterComponent::paint (juce::Graphics& g)
 {
-    g.fillAll(OurColours::BaseColour);
+    g.fillAll(OurColours::BaseTransparent);
 }
 
 void FilterComponent::resized()
@@ -50,8 +44,7 @@ void FilterComponent::resized()
     const auto labelYOffset = 20;
     const auto labelHeight = 20;
 
-    filterTypeSelector.setBounds(30, startY + 10, 90, 30);
-    filterSelectorLabel.setBounds(filterTypeSelector.getX(), filterTypeSelector.getY() - labelYOffset, 90, labelHeight);
+    filterTypeSelector.setBounds(10, startY+5, 90, 30);
 
     filterCutoffSlider.setBounds(filterTypeSelector.getX(), filterTypeSelector.getBottom() + 40, sliderWidth, sliderHeight);
     filterCutoffLabel.setBounds(filterCutoffSlider.getX(), filterCutoffSlider.getY() - labelYOffset, filterCutoffSlider.getWidth(), labelHeight);
