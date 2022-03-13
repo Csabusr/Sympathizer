@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "StyleSheet.h"
 
 //==============================================================================
 /*
@@ -25,7 +26,7 @@ public:
     void resized() override;
 
 private:
-    juce::ComboBox oscWaveSelector;
+    juce::drawCustomComboBox oscWaveSelector;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> oscWaveSelectorAttachment;
 
 
