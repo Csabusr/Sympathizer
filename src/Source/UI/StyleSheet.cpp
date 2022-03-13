@@ -121,12 +121,14 @@ namespace juce {
 
     }
 
-    void CustomLNF::drawLinearSlider(Graphics& g, int x, int y, int width, int height,
-        float sliderPos,
-        float minSliderPos,
-        float maxSliderPos,
-        const Slider::SliderStyle style, Slider& slider)
+    void CustomLNF::drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider)
     {
+
+        Path pathdot;
+        pathdot.addEllipse(x+20, y+20, 2.0f, 2.0f);
+        g.setColour(OurColours::ActiveRedOutline);
+        g.strokePath(pathdot, PathStrokeType(2.0f));
+
         if (slider.isBar())
         {
             g.setColour(slider.findColour(Slider::trackColourId));
@@ -215,5 +217,32 @@ namespace juce {
                 }
             }
         }
+    }
+
+    void CustomLNF::drawComboBox(Graphics& g, int width, int height, bool,
+        int, int, int, int, ComboBox& box)
+    {
+        auto cornerSize = box.findParentComponentOfClass<ChoicePropertyComponent>() != nullptr ? 0.0f : 3.0f;
+        Rectangle<int> boxBounds(0, 0, width, height);
+        Rectangle<int> arrowZone(width - 30, 0-2, 30, height);
+        
+        Path path;
+        Path pathradius;
+        Path pathout;
+
+        float x = arrowZone.getCentreX();
+        float y = arrowZone.getCentreY();
+
+        pathout.addEllipse(x-1, y-1, 6.0f, 6.0f);
+        g.setColour(OurColours::ActiveRedOutline);
+        g.strokePath(pathout, PathStrokeType(6.0f));
+
+        pathradius.addEllipse(x-0.5f, y-0.5f, 5.0f, 5.0f);
+        g.setColour(OurColours::ActiveRedFirstRadius);
+        g.strokePath(pathradius, PathStrokeType(1.0f));
+
+        path.addEllipse(x, y, 4.0f, 4.0f);
+        g.setColour(OurColours::ActiveRed);
+        g.strokePath(path, PathStrokeType(4.0f));
     }
 }
