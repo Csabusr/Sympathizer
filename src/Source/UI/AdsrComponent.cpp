@@ -50,7 +50,7 @@ AdsrComponent::~AdsrComponent()
 
 void AdsrComponent::paint(juce::Graphics& g)
 {
-    g.fillAll(OurColours::BaseColour);
+    g.fillAll(OurColours::BaseTransparent);
 }
 
 void AdsrComponent::resized()

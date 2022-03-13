@@ -49,14 +49,14 @@ private:
 
     juce::MidiKeyboardComponent midiKeyboardComponent;
 
-    juce::Slider osc1GainSlider;
-    juce::Slider osc2GainSlider;
-    juce::Slider osc3GainSlider;
+    juce::CustomOscDial osc1GainSlider;
+    juce::CustomOscDial osc2GainSlider;
+    juce::CustomOscDial osc3GainSlider;
 
-    juce::Slider osc2TuningSlider;
-    juce::Slider osc3TuningSlider;
+    juce::CustomOscDial osc2TuningSlider;
+    juce::CustomOscDial osc3TuningSlider;
 
-    juce::Slider gainSlider;
+    juce::CustomDial2 gainSlider;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc1GainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2GainAttachment;
