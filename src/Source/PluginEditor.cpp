@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "UI/Colours.h"
+using namespace juce;
 
 //==============================================================================
 SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudioProcessor& p)
@@ -90,20 +91,90 @@ void SympathizerAudioProcessorEditor::paint(juce::Graphics& g)
     g.setColour(OurColours::HighlightColor);
 
     g.setFont(20.0f);
-    g.drawText("FILTER", 345, 440, 60, 20, juce::Justification::left);
-    g.drawRoundedRectangle(20, 430, 730, 260, 5.0f, 2.0f);
+    g.drawRoundedRectangle(20, 20, 410, 360, 5.0f, 2.0f);
 
-    g.drawText("FILTER", 345, 440, 60, 20, juce::Justification::left);
-    g.drawRoundedRectangle(20, 10, 410, 370, 5.0f, 2.0f);
 
-    g.drawText("OSC2", 565, 20, 50, 20, juce::Justification::left);
-    g.drawRoundedRectangle(430, 10, 320, 210, 5.0f, 2.0f);
+    //FILTER
+    g.setColour(OurColours::HighlightColor);
+    int f1sx = 20;
+    int f1sy = 440;
+    int f1ex = 730;
+    int f1yx = 360;
 
-    g.drawText("OSC3", 565, 230, 50, 20, juce::Justification::left);
-    g.drawRoundedRectangle(430, 220, 320, 210, 5.0f, 2.0f);
+    g.drawRoundedRectangle(f1sx, f1sy, f1ex, f1yx, 5.0f, 2.0f);
+    g.drawRoundedRectangle(f1sx + 10, f1sy, f1ex - 20, 20, 5.0f, 20.0f);
+    g.drawRoundedRectangle(f1sx + 10, f1sy + 10, f1ex - 20, 10, 0.0f, 20.0f);
 
+    g.setColour(OurColours::ScrewHeadBase);
+    g.drawRoundedRectangle(f1ex - 10, f1sy + 5, 10, 10, 5.0f, 10.0f);
+
+    g.setColour(OurColours::ScrewHeadBase2);
+    Path ScrewCross;
+    ScrewCross.startNewSubPath((float)f1ex - 10, (float)f1sy + 6);
+    ScrewCross.lineTo((float)f1ex, (float)f1sy + 15);
+    g.strokePath(ScrewCross, PathStrokeType(2.0f));
+    Path ScrewCross2;
+    ScrewCross2.startNewSubPath((float)f1ex, (float)f1sy + 6);
+    ScrewCross2.lineTo((float)f1ex -10, (float)f1sy + 15);
+    g.strokePath(ScrewCross2, PathStrokeType(2.0f));
+
+    g.setColour(OurColours::BaseColour);
+    g.setFont(30.0f);
+    g.drawText("FILTER", 325, 440, 100, 20, juce::Justification::left);
+
+    //OSC 1
+    g.setColour(OurColours::HighlightColor);
+    int o1sx = 20;
+    int o1sy = 20;
+    int o1ex = 410;
+    int o1yx = 200;
+
+
+    g.drawRoundedRectangle(o1sx, o1sy, o1ex, o1yx, 5.0f, 2.0f);
+    g.drawRoundedRectangle(o1sx + 10, o1sy, o1ex - 20, o1yx - 180, 5.0f, 20.0f);
+    g.drawRoundedRectangle(o1sx + 10, o1sy + 10, o1ex - 20, o1yx - 190, 0.0f, 20.0f);
+
+    g.setColour(OurColours::BaseColour);
+    g.setFont(30.0f);
+    g.drawText("OSC1", 200, 20, 70, 20, juce::Justification::left);
+
+    //OSC 2
+    g.setColour(OurColours::HighlightColor);
+    int o2sx = 430;
+    int o2sy = 20;
+    int o2ex = 320;
+    int o2yx = 200;
+
+
+    g.drawRoundedRectangle(o2sx, o2sy, o2ex, o2yx, 5.0f, 2.0f);
+    g.drawRoundedRectangle(o2sx + 10, o2sy, o2ex - 20, o2yx - 180, 5.0f, 20.0f);
+    g.drawRoundedRectangle(o2sx + 10, o2sy + 10, o2ex - 20, o2yx - 190, 0.0f, 20.0f);
+
+
+    g.setColour(OurColours::BaseColour);
+    g.setFont(30.0f);
+    g.drawText("OSC2", 555, 20, 70, 20, juce::Justification::left);
+
+
+    //OSC 3
+    g.setColour(OurColours::HighlightColor);
+    int o3sx = 430;
+    int o3sy = 230;
+    int o3ex = 320;
+    int o3yx = 200;
+
+    g.drawRoundedRectangle(o3sx, o3sy, o3ex, o3yx, 5.0f, 2.0f);
+    g.drawRoundedRectangle(o3sx+10, o3sy, o3ex-20, o3yx-180, 5.0f, 20.0f);
+    g.drawRoundedRectangle(o3sx+10, o3sy+10, o3ex-20, o3yx-190, 0.0f, 20.0f);
+
+    g.setColour(OurColours::BaseColour);
+    g.setFont(30.0f);
+    g.drawText("OSC3", 555, 230, 70, 20, juce::Justification::left);
+
+    //SYMPATHIZER
+
+    g.setColour(OurColours::HighlightColor);
     g.setFont(40.0f);
-
     g.drawRoundedRectangle(20, 380, 410, 50, 5.0f, 2.0f);
     g.drawText("SYMPATHIZER", 100, 375, 250, 60, juce::Justification::left);
 
@@ -116,9 +187,10 @@ void SympathizerAudioProcessorEditor::resized()
 
     //myDial.setBounds(getWidth() / 2 - 50, getHeight() / 2 - 50, 100, 100);
     osc1.setBounds(30, 20, 100, 30);
-    adsr.setBounds(osc1.getX()+10, osc1.getBottom() + 10, 200, 150);
-    osc1GainSlider.setBounds(30, adsr.getBottom()+ 10, 150, 150);
-    gainSlider.setBounds(adsr.getRight() + 20, 80, 100, 100);
+    adsr.setBounds(40, 235, 250, 160);
+    osc1GainSlider.setBounds(30, 60, 150, 150);
+
+    gainSlider.setBounds(adsr.getRight() + 20, 250 , 100, 100);
     fm.setBounds(osc1GainSlider.getRight() + 40, osc1GainSlider.getY(), 200, 150);
 
     osc2.setBounds(getWidth() / 2+50, 20, 100, 30);
@@ -129,9 +201,9 @@ void SympathizerAudioProcessorEditor::resized()
     osc3GainSlider.setBounds((getWidth() / 2)+50, osc3.getBottom() + 10, 150, 150);
     osc3TuningSlider.setBounds(osc3GainSlider.getRight() + 10, osc3GainSlider.getY(), 150, 150);
 
-    modAdsr.setBounds((getWidth() / 2), osc3TuningSlider.getBottom() + 50, 350, 200);
+    modAdsr.setBounds((getWidth() / 2), osc3TuningSlider.getBottom() + 70, 350, 200);
 
-    filter.setBounds(25, osc3TuningSlider.getBottom() + 40, 300, 190);
+    filter.setBounds(25, osc3TuningSlider.getBottom(), 300, 190);
 
     midiKeyboardComponent.setBounds(20, 700, 730, 100);
 }
