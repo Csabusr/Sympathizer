@@ -64,8 +64,6 @@ public:
 
 private:
     juce::Synthesiser synth;
-    FilterData filter;
-
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
 
