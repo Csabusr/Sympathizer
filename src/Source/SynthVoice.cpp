@@ -29,7 +29,7 @@ void SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
     adsr.noteOff();
     modAdsr.noteOff();
-    if (!allowTailOff || !adsr.isActive())
+    if (!allowTailOff && !adsr.isActive() && !modAdsr.isActive())
     {
         clearCurrentNote();
     }
@@ -67,6 +67,13 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
     osc1Gain.prepare(spec);
     osc2Gain.prepare(spec);
     osc3Gain.prepare(spec);
+
+    /*
+    osc1Buffer.setSize(outputChannels, samplesPerBlock, false, false, true);
+    osc2Buffer.setSize(outputChannels, samplesPerBlock, false, false, true);
+    osc3Buffer.setSize(outputChannels, samplesPerBlock, false, false, true);
+    synthBuffer.setSize(outputChannels, samplesPerBlock, false, false, true);
+    */
     
 
     isPrepared = true;
@@ -117,15 +124,17 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 {
     jassert(isPrepared);
 
-    if (!isVoiceActive())
+    if (!isVoiceActive() && !adsr.isActive() && !modAdsr.isActive())
     {
         return;
     }
-
+    
+    
     osc1Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     osc2Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     osc3Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     synthBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    
 
     //Ahhoz hogy működjön a mod, meg kell hívni az applyEnvelopeToBuffer fv-t. De mivel nem szeretnénk ilyen módon
     //használni, ezért üres buffer-re alkalmazzuk.
