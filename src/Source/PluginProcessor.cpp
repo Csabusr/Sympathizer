@@ -109,6 +109,19 @@ void SympathizerAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 
     synth.setCurrentPlaybackSampleRate(sampleRate);
 
+    juce::dsp::ProcessSpec spec;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = getNumOutputChannels();
+    spec.sampleRate = sampleRate;
+
+    chorus.prepare(spec);
+    chorus.reset();
+    chorus.setRate(0.5);
+    chorus.setDepth(0.15);
+    chorus.setMix(0.12);
+    chorus.setCentreDelay(2.3);
+    chorus.setFeedback(0.50);
+
     for (int i = 0; i < synth.getNumVoices(); i++)
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
@@ -234,6 +247,10 @@ void SympathizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     }
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    juce::dsp::AudioBlock<float> audioBlock{ buffer };
+
+    chorus.process(juce::dsp::ProcessContextReplacing<float>{ audioBlock });
 
     buffer.applyGain(*apvts.getRawParameterValue("GAIN"));
 }

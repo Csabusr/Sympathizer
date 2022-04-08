@@ -64,6 +64,7 @@ public:
 
 private:
     juce::Synthesiser synth;
+    juce::dsp::Chorus<float> chorus;
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
 
