@@ -57,7 +57,7 @@ SympathizerAudioProcessorEditor::SympathizerAudioProcessorEditor(SympathizerAudi
 
 
 
-    setSize(770, 820);
+    setSize(770, 810);
     //addAndMakeVisible(myDial);
     
     addAndMakeVisible(osc1);
@@ -99,7 +99,7 @@ void SympathizerAudioProcessorEditor::paint(juce::Graphics& g)
     int f1sx = 20;
     int f1sy = 440;
     int f1ex = 730;
-    int f1yx = 360;
+    int f1yx = 350;
 
     g.drawRoundedRectangle(f1sx, f1sy, f1ex, f1yx, 5.0f, 2.0f);
     g.drawRoundedRectangle(f1sx + 10, f1sy, f1ex - 20, 20, 5.0f, 20.0f);
@@ -178,6 +178,11 @@ void SympathizerAudioProcessorEditor::paint(juce::Graphics& g)
     g.drawRoundedRectangle(20, 380, 410, 50, 5.0f, 2.0f);
     g.drawText("SYMPATHIZER", 100, 375, 250, 60, juce::Justification::left);
 
+    g.setFont(12.0f);
+    g.drawText("vol", gainSlider.getX()+((gainSlider.getRight()-gainSlider.getX())/2)-8, 240, 20, 10, juce::Justification::left);
+    //osc1
+    g.drawText("vol", gainSlider.getX()+((gainSlider.getRight()-gainSlider.getX())/2)-8, 240, 20, 10, juce::Justification::left);
+
 }
 
 
@@ -205,5 +210,5 @@ void SympathizerAudioProcessorEditor::resized()
 
     filter.setBounds(25, osc3TuningSlider.getBottom(), 300, 190);
 
-    midiKeyboardComponent.setBounds(20, 700, 730, 100);
+    midiKeyboardComponent.setBounds(20, 700, 730, 90);
 }
