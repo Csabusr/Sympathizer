@@ -181,7 +181,5 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
             clearCurrentNote();
         }
     }
-
-    modAdsr.getNextSample();
 }
 
